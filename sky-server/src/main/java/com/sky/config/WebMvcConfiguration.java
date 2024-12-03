@@ -5,20 +5,24 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.config.annotation.*;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * 配置类，注册web层相关组件
  */
 @Configuration
+@EnableSwagger2
 @Slf4j
 public class WebMvcConfiguration extends WebMvcConfigurationSupport {
 
@@ -30,39 +34,88 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
      *
      * @param registry
      */
+    @Override
     protected void addInterceptors(InterceptorRegistry registry) {
-        log.info("开始注册自定义拦截器...");
+        log.info("Registering custom interceptors");
         registry.addInterceptor(jwtTokenAdminInterceptor)
                 .addPathPatterns("/admin/**")
                 .excludePathPatterns("/admin/employee/login");
     }
 
     /**
-     * 通过knife4j生成接口文档
+     * 通过Swagger生成接口文档
+     *
      * @return
      */
     @Bean
     public Docket docket() {
+        log.info("Generating API documentation");
         ApiInfo apiInfo = new ApiInfoBuilder()
-                .title("苍穹外卖项目接口文档")
+                .title("food-order-app")
                 .version("2.0")
-                .description("苍穹外卖项目接口文档")
+                .description("food-order-app API documentation")
                 .build();
-        Docket docket = new Docket(DocumentationType.SWAGGER_2)
+
+        return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.sky.controller"))
                 .paths(PathSelectors.any())
-                .build();
-        return docket;
+                .build()// 添加全局认证配置
+                .securityContexts(securityContexts())
+                .securitySchemes(securitySchemes());
+    }
+
+    private List<SecurityScheme> securitySchemes() {
+        return Collections.singletonList(
+                new ApiKey("token", "token", "header")
+        );
+    }
+
+    private List<SecurityContext> securityContexts() {
+        return Collections.singletonList(
+                SecurityContext.builder()
+                        .securityReferences(defaultAuth())
+                        .forPaths(PathSelectors.ant("/admin/**"))
+                        .build()
+        );
+    }
+
+    private List<SecurityReference> defaultAuth() {
+        AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
+        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
+        authorizationScopes[0] = authorizationScope;
+        return Collections.singletonList(
+                new SecurityReference("token", authorizationScopes)
+        );
+
     }
 
     /**
      * 设置静态资源映射
+     *
      * @param registry
      */
+    @Override
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/doc.html").addResourceLocations("classpath:/META-INF/resources/");
-        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+        log.info("Setting static resource mapping...");
+        registry.addResourceHandler("/swagger-ui/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/springfox-swagger-ui/");
+        registry.addResourceHandler("/v2/api-docs")
+                .addResourceLocations("classpath:/META-INF/resources/");
+    }
+
+    /**
+     * Global CORS configuration.
+     */
+    @Override
+    protected void addCorsMappings(CorsRegistry registry) {
+        log.info("Setting static cors mappings...");
+        registry.addMapping("/**")  // Apply to all paths
+                .allowedOrigins("http://localhost:5173")  // Allowed origin(s)
+                .allowedMethods("GET", "POST", "PUT", "DELETE")  // Allowed HTTP methods
+                .allowedHeaders("*")  // Allowed headers
+                .allowCredentials(true)  // Allow cookies
+                .maxAge(3600);  // Pre-flight request cache time (1 hour)
     }
 }
