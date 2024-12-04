@@ -1,10 +1,13 @@
 package com.sky.config;
 
 import com.sky.interceptor.JwtTokenAdminInterceptor;
+import com.sky.json.JacksonObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.*;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -117,5 +120,14 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
                 .allowedHeaders("*")  // Allowed headers
                 .allowCredentials(true)  // Allow cookies
                 .maxAge(3600);  // Pre-flight request cache time (1 hour)
+    }
+
+    // Convert time to yyyy-mm-dd
+    @Override
+    protected void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+        log.info("Setting message converters...");
+        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+        converter.setObjectMapper(new JacksonObjectMapper());
+        converters.add(0, converter);
     }
 }
