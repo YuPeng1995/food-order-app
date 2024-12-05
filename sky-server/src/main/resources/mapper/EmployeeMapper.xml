@@ -14,13 +14,13 @@
     <update id="update" parameterType="Employee">
     update employee
     <set>
-        <if test="name != null">name = #{name}</if>
-        <if test="username != null">username = #{username}</if>
-        <if test="password != null">password = #{password}</if>
-        <if test="phone != null">phone = #{phone}</if>
-        <if test="driverLicense != null">driver_license = #{driverLicense}</if>
-        <if test="updateTime != null">update_time = #{updateTime}</if>
-        <if test="updateUser != null">update_user = #{updateUser}</if>
+        <if test="name != null">name = #{name},</if>
+        <if test="username != null">username = #{username},</if>
+        <if test="password != null">password = #{password},</if>
+        <if test="phone != null">phone = #{phone},</if>
+        <if test="driverLicense != null">driver_license = #{driverLicense},</if>
+        <if test="updateTime != null">update_time = #{updateTime},</if>
+        <if test="updateUser != null">update_user = #{updateUser},</if>
         <if test="status != null">status = #{status}</if>
     </set>
     where id = #{id}

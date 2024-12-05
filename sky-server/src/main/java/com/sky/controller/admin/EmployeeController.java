@@ -99,4 +99,20 @@ public class EmployeeController {
         employeeService.enableAndDisable(status,id);
         return null;
     }
+
+    @GetMapping("/{id}")
+    @ApiOperation(value = "Query employee information by id")
+    public Result<Employee> queryById(@PathVariable Long id) {
+        log.info("Query employee information by id : {}", id);
+        Employee employee = employeeService.queryById(id);
+        return Result.success(employee);
+    }
+
+    @PutMapping
+    @ApiOperation(value = "Update employee information")
+    public Result update(@RequestBody EmployeeDTO employeeDTO) {
+        log.info("Update employee : {}", employeeDTO);
+        employeeService.update(employeeDTO);
+        return Result.success();
+    }
 }
