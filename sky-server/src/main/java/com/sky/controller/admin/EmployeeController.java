@@ -92,4 +92,11 @@ public class EmployeeController {
         return Result.success(pageResult);
     }
 
+    @PostMapping("/status/{status}")
+    @ApiOperation(value = "Enable or disable employee account")
+    public Result enableAndDisable(@PathVariable Integer status, Long id) {
+        log.info("Enable or disable employee account : {}, {}", status, id);
+        employeeService.enableAndDisable(status,id);
+        return null;
+    }
 }
