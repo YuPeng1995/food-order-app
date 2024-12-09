@@ -26,7 +26,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/admin/employee")
 @Slf4j
-@Api(tags = "Apis for employee")
+@Api(tags = "Employee Apis")
 public class EmployeeController {
 
     @Autowired
@@ -97,7 +97,7 @@ public class EmployeeController {
     public Result enableAndDisable(@PathVariable Integer status, Long id) {
         log.info("Enable or disable employee account : {}, {}", status, id);
         employeeService.enableAndDisable(status,id);
-        return null;
+        return Result.success();
     }
 
     @GetMapping("/{id}")
@@ -115,4 +115,5 @@ public class EmployeeController {
         employeeService.update(employeeDTO);
         return Result.success();
     }
+
 }

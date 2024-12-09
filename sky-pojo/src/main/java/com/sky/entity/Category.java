@@ -24,7 +24,7 @@ public class Category implements Serializable {
     private String name;
 
     //顺序
-    private Integer sort;
+    private Integer sortOrder;
 
     //分类状态 0标识禁用 1表示启用
     private Integer status;
