@@ -1,7 +1,7 @@
 package com.sky.utils;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
+//import com.alibaba.fastjson.JSON;
+//import com.alibaba.fastjson.JSONObject;
 import com.sky.properties.WeChatProperties;
 import com.wechat.pay.contrib.apache.httpclient.WechatPayHttpClientBuilder;
 import com.wechat.pay.contrib.apache.httpclient.util.PemUtil;
@@ -131,28 +131,28 @@ public class WeChatPayUtil {
      * @param openid      微信用户的openid
      * @return
      */
-    private String jsapi(String orderNum, BigDecimal total, String description, String openid) throws Exception {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("appid", weChatProperties.getAppid());
-        jsonObject.put("mchid", weChatProperties.getMchid());
-        jsonObject.put("description", description);
-        jsonObject.put("out_trade_no", orderNum);
-        jsonObject.put("notify_url", weChatProperties.getNotifyUrl());
-
-        JSONObject amount = new JSONObject();
-        amount.put("total", total.multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).intValue());
-        amount.put("currency", "CNY");
-
-        jsonObject.put("amount", amount);
-
-        JSONObject payer = new JSONObject();
-        payer.put("openid", openid);
-
-        jsonObject.put("payer", payer);
-
-        String body = jsonObject.toJSONString();
-        return post(JSAPI, body);
-    }
+//    private String jsapi(String orderNum, BigDecimal total, String description, String openid) throws Exception {
+//        JSONObject jsonObject = new JSONObject();
+//        jsonObject.put("appid", weChatProperties.getAppid());
+//        jsonObject.put("mchid", weChatProperties.getMchid());
+//        jsonObject.put("description", description);
+//        jsonObject.put("out_trade_no", orderNum);
+//        jsonObject.put("notify_url", weChatProperties.getNotifyUrl());
+//
+//        JSONObject amount = new JSONObject();
+//        amount.put("total", total.multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).intValue());
+//        amount.put("currency", "CNY");
+//
+//        jsonObject.put("amount", amount);
+//
+//        JSONObject payer = new JSONObject();
+//        payer.put("openid", openid);
+//
+//        jsonObject.put("payer", payer);
+//
+//        String body = jsonObject.toJSONString();
+//        return post(JSAPI, body);
+//    }
 
     /**
      * 小程序支付
@@ -163,47 +163,47 @@ public class WeChatPayUtil {
      * @param openid      微信用户的openid
      * @return
      */
-    public JSONObject pay(String orderNum, BigDecimal total, String description, String openid) throws Exception {
-        //统一下单，生成预支付交易单
-        String bodyAsString = jsapi(orderNum, total, description, openid);
-        //解析返回结果
-        JSONObject jsonObject = JSON.parseObject(bodyAsString);
-        System.out.println(jsonObject);
-
-        String prepayId = jsonObject.getString("prepay_id");
-        if (prepayId != null) {
-            String timeStamp = String.valueOf(System.currentTimeMillis() / 1000);
-            String nonceStr = RandomStringUtils.randomNumeric(32);
-            ArrayList<Object> list = new ArrayList<>();
-            list.add(weChatProperties.getAppid());
-            list.add(timeStamp);
-            list.add(nonceStr);
-            list.add("prepay_id=" + prepayId);
-            //二次签名，调起支付需要重新签名
-            StringBuilder stringBuilder = new StringBuilder();
-            for (Object o : list) {
-                stringBuilder.append(o).append("\n");
-            }
-            String signMessage = stringBuilder.toString();
-            byte[] message = signMessage.getBytes();
-
-            Signature signature = Signature.getInstance("SHA256withRSA");
-            signature.initSign(PemUtil.loadPrivateKey(new FileInputStream(new File(weChatProperties.getPrivateKeyFilePath()))));
-            signature.update(message);
-            String packageSign = Base64.getEncoder().encodeToString(signature.sign());
-
-            //构造数据给微信小程序，用于调起微信支付
-            JSONObject jo = new JSONObject();
-            jo.put("timeStamp", timeStamp);
-            jo.put("nonceStr", nonceStr);
-            jo.put("package", "prepay_id=" + prepayId);
-            jo.put("signType", "RSA");
-            jo.put("paySign", packageSign);
-
-            return jo;
-        }
-        return jsonObject;
-    }
+//    public JSONObject pay(String orderNum, BigDecimal total, String description, String openid) throws Exception {
+//        //统一下单，生成预支付交易单
+//        String bodyAsString = jsapi(orderNum, total, description, openid);
+//        //解析返回结果
+//        JSONObject jsonObject = JSON.parseObject(bodyAsString);
+//        System.out.println(jsonObject);
+//
+//        String prepayId = jsonObject.getString("prepay_id");
+//        if (prepayId != null) {
+//            String timeStamp = String.valueOf(System.currentTimeMillis() / 1000);
+//            String nonceStr = RandomStringUtils.randomNumeric(32);
+//            ArrayList<Object> list = new ArrayList<>();
+//            list.add(weChatProperties.getAppid());
+//            list.add(timeStamp);
+//            list.add(nonceStr);
+//            list.add("prepay_id=" + prepayId);
+//            //二次签名，调起支付需要重新签名
+//            StringBuilder stringBuilder = new StringBuilder();
+//            for (Object o : list) {
+//                stringBuilder.append(o).append("\n");
+//            }
+//            String signMessage = stringBuilder.toString();
+//            byte[] message = signMessage.getBytes();
+//
+//            Signature signature = Signature.getInstance("SHA256withRSA");
+//            signature.initSign(PemUtil.loadPrivateKey(new FileInputStream(new File(weChatProperties.getPrivateKeyFilePath()))));
+//            signature.update(message);
+//            String packageSign = Base64.getEncoder().encodeToString(signature.sign());
+//
+//            //构造数据给微信小程序，用于调起微信支付
+//            JSONObject jo = new JSONObject();
+//            jo.put("timeStamp", timeStamp);
+//            jo.put("nonceStr", nonceStr);
+//            jo.put("package", "prepay_id=" + prepayId);
+//            jo.put("signType", "RSA");
+//            jo.put("paySign", packageSign);
+//
+//            return jo;
+//        }
+//        return jsonObject;
+//    }
 
     /**
      * 申请退款
@@ -214,22 +214,22 @@ public class WeChatPayUtil {
      * @param total         原订单金额
      * @return
      */
-    public String refund(String outTradeNo, String outRefundNo, BigDecimal refund, BigDecimal total) throws Exception {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("out_trade_no", outTradeNo);
-        jsonObject.put("out_refund_no", outRefundNo);
-
-        JSONObject amount = new JSONObject();
-        amount.put("refund", refund.multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).intValue());
-        amount.put("total", total.multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).intValue());
-        amount.put("currency", "CNY");
-
-        jsonObject.put("amount", amount);
-        jsonObject.put("notify_url", weChatProperties.getRefundNotifyUrl());
-
-        String body = jsonObject.toJSONString();
-
-        //调用申请退款接口
-        return post(REFUNDS, body);
-    }
+//    public String refund(String outTradeNo, String outRefundNo, BigDecimal refund, BigDecimal total) throws Exception {
+//        JSONObject jsonObject = new JSONObject();
+//        jsonObject.put("out_trade_no", outTradeNo);
+//        jsonObject.put("out_refund_no", outRefundNo);
+//
+//        JSONObject amount = new JSONObject();
+//        amount.put("refund", refund.multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).intValue());
+//        amount.put("total", total.multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).intValue());
+//        amount.put("currency", "CNY");
+//
+//        jsonObject.put("amount", amount);
+//        jsonObject.put("notify_url", weChatProperties.getRefundNotifyUrl());
+//
+//        String body = jsonObject.toJSONString();
+//
+//        //调用申请退款接口
+//        return post(REFUNDS, body);
+//    }
 }

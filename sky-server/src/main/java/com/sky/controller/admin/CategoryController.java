@@ -114,7 +114,7 @@ public class CategoryController {
 
     @PutMapping
     @ApiOperation("Update category")
-    public Result update(CategoryDTO categoryDTO) {
+    public Result update(@RequestBody CategoryDTO categoryDTO) {
         categoryService.update(categoryDTO);
         return Result.success();
     }
@@ -135,7 +135,7 @@ public class CategoryController {
 
     @PostMapping
     @ApiOperation("Create new category")
-    public Result create(CategoryDTO categoryDTO) {
+    public Result create(@RequestBody CategoryDTO categoryDTO) {
         categoryService.create(categoryDTO);
         return Result.success();
     }

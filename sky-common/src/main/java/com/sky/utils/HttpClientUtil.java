@@ -1,6 +1,8 @@
 package com.sky.utils;
 
-import com.alibaba.fastjson.JSONObject;
+//import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -139,7 +141,8 @@ public class HttpClientUtil {
 
             if (paramMap != null) {
                 //构造json格式数据
-                JSONObject jsonObject = new JSONObject();
+                ObjectMapper objectMapper = new ObjectMapper();
+                ObjectNode jsonObject = objectMapper.createObjectNode();
                 for (Map.Entry<String, String> param : paramMap.entrySet()) {
                     jsonObject.put(param.getKey(),param.getValue());
                 }

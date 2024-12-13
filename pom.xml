@@ -20,11 +20,13 @@
     <properties>
         <mybatis.spring>2.2.0</mybatis.spring>
         <lombok>1.18.20</lombok>
-        <fastjson>1.2.76</fastjson>
+        <!--        <fastjson>1.2.76</fastjson>-->
+        <!--        <jackson.version>2.15.2</jackson.version>-->
         <commons.lang>2.6</commons.lang>
-        <druid>1.2.1</druid>
+        <!--        <druid>1.2.1</druid>-->
         <pagehelper>1.3.0</pagehelper>
         <aliyun.sdk.oss>3.10.2</aliyun.sdk.oss>
+        <hiraki.cp.version>3.0.0</hiraki.cp.version>
         <aspectj>1.9.4</aspectj>
         <jjwt>0.9.1</jjwt>
         <jaxb-api>2.3.1</jaxb-api>
@@ -50,11 +52,18 @@
                 <version>${lombok}</version>
             </dependency>
 
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>fastjson</artifactId>
-                <version>${fastjson}</version>
-            </dependency>
+            <!--            <dependency>-->
+            <!--                <groupId>com.alibaba</groupId>-->
+            <!--                <artifactId>fastjson</artifactId>-->
+            <!--                <version>${fastjson}</version>-->
+            <!--            </dependency>-->
+
+            <!--            <dependency>-->
+            <!--                <groupId>com.fasterxml.jackson.core</groupId>-->
+            <!--                <artifactId>jackson-databind</artifactId>-->
+            <!--                <version>2.15.2</version>-->
+            <!--            </dependency>-->
+
 
             <dependency>
                 <groupId>commons-lang</groupId>
@@ -62,11 +71,18 @@
                 <version>${commons.lang}</version>
             </dependency>
 
+            <!--            <dependency>-->
+            <!--                <groupId>com.alibaba</groupId>-->
+            <!--                <artifactId>druid-spring-boot-starter</artifactId>-->
+            <!--                <version>${druid}</version>-->
+            <!--            </dependency>-->
+
             <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>druid-spring-boot-starter</artifactId>
-                <version>${druid}</version>
+                <groupId>com.zaxxer</groupId>
+                <artifactId>HikariCP</artifactId>
+                <version>${hiraki.cp.version}</version>
             </dependency>
+
 
             <dependency>
                 <groupId>com.github.pagehelper</groupId>
