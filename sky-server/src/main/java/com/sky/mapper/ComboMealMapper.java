@@ -11,7 +11,7 @@ public interface ComboMealMapper {
      * @param id
      * @return
      */
-    @Select("select count(id) from setmeal where category_id = #{categoryId}")
+    @Select("select count(id) from combo_meal where category_id = #{categoryId}")
     Integer countByCategoryId(Long id);
 
 }

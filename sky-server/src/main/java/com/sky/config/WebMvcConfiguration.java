@@ -18,6 +18,7 @@ import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
      * @return
      */
     @Bean
-    public Docket docket() {
+    public Docket docket1() {
         log.info("Generating API documentation");
         ApiInfo apiInfo = new ApiInfoBuilder()
                 .title("food-order-app")
@@ -60,9 +61,30 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
                 .build();
 
         return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("Admin Apis")
                 .apiInfo(apiInfo)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.sky.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.sky.controller.admin"))
+                .paths(PathSelectors.any())
+                .build()// 添加全局认证配置
+                .securityContexts(securityContexts())
+                .securitySchemes(securitySchemes());
+    }
+
+    @Bean
+    public Docket docket2() {
+        log.info("Generating API documentation");
+        ApiInfo apiInfo = new ApiInfoBuilder()
+                .title("food-order-app")
+                .version("2.0")
+                .description("food-order-app API documentation")
+                .build();
+
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("User Apis")
+                .apiInfo(apiInfo)
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.sky.controller.user"))
                 .paths(PathSelectors.any())
                 .build()// 添加全局认证配置
                 .securityContexts(securityContexts())
@@ -76,10 +98,14 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
     }
 
     private List<SecurityContext> securityContexts() {
-        return Collections.singletonList(
+        return Arrays.asList(
                 SecurityContext.builder()
                         .securityReferences(defaultAuth())
                         .forPaths(PathSelectors.ant("/admin/**"))
+                        .build(),
+                SecurityContext.builder()
+                        .securityReferences(defaultAuth())
+                        .forPaths(PathSelectors.ant("/user/**"))
                         .build()
         );
     }

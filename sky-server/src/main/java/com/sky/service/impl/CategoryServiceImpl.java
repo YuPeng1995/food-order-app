@@ -33,7 +33,7 @@ public class CategoryServiceImpl implements CategoryService {
 //    @Autowired
 //    private DishMapper dishMapper;
 //    @Autowired
-//    private SetmealMapper setmealMapper;
+//    private ComboMealMapper comboMealMapper;
 //
 //    /**
 //     * 新增分类
@@ -81,10 +81,10 @@ public class CategoryServiceImpl implements CategoryService {
 //        }
 //
 //        //查询当前分类是否关联了套餐，如果关联了就抛出业务异常
-//        count = setmealMapper.countByCategoryId(id);
+//        count = comboMealMapper.countByCategoryId(id);
 //        if(count > 0){
 //            //当前分类下有菜品，不能删除
-//            throw new DeletionNotAllowedException(MessageConstant.CATEGORY_BE_RELATED_BY_SETMEAL);
+//            throw new DeletionNotAllowedException(MessageConstant.CATEGORY_BE_RELATED_BY_COMBO_MEAL);
 //        }
 //
 //        //删除分类数据
@@ -192,7 +192,7 @@ public class CategoryServiceImpl implements CategoryService {
         }
         count = comboMealMapper.countByCategoryId(id);
         if (count > 0) {
-            throw new DeletionNotAllowedException(MessageConstant.CATEGORY_BE_RELATED_BY_COMBOMEAL);
+            throw new DeletionNotAllowedException(MessageConstant.CATEGORY_BE_RELATED_BY_COMBO_MEAL);
         }
         categoryMapper.delete(id);
     }
