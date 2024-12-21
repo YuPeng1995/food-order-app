@@ -24,34 +24,20 @@ public class AddressBook implements Serializable {
     private Long userId;
 
     //收货人
-    private String consignee;
+    private String name;
 
     //手机号
     private String phone;
 
-    //性别 0 女 1 男
-    private String sex;
+    private String stateCode;
 
-    //省级区划编号
-    private String provinceCode;
+    private String stateName;
 
-    //省级名称
-    private String provinceName;
-
-    //市级区划编号
-    private String cityCode;
-
-    //市级名称
     private String cityName;
 
-    //区级区划编号
-    private String districtCode;
+    private String zipCode;
 
-    //区级名称
-    private String districtName;
-
-    //详细地址
-    private String detail;
+    private String streetAddress;
 
     //标签
     private String label;

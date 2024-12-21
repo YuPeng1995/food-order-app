@@ -28,6 +28,7 @@ public class RestaurantController {
         log.info("Get restaurant status: {}", status == 1 ? "open" : "close");
         return Result.success(status);
     }
+
 }
 
 
