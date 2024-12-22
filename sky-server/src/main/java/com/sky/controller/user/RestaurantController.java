@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController("userRestaurantController")
 @RequestMapping("/user/restaurant")
 @Slf4j
-@Api(tags = "User restaurant Apis")
+@Api(tags = "User Restaurant Apis")
 public class RestaurantController {
 
     public static final String RESTAURANT_STATUS = "restaurant_status";

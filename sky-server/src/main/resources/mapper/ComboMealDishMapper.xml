@@ -3,6 +3,15 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sky.mapper.ComboMealDishMapper">
 
+    <insert id="insertBatch" parameterType="list">
+        insert into combo_meal_dish
+        (combo_meal_id,dish_id,name,price,copies)
+        values
+        <foreach collection="comboMealDishes" item="cd" separator=",">
+            (#{cd.comboMealId},#{cd.dishId},#{cd.name},#{cd.price},#{cd.copies})
+        </foreach>
+    </insert>
+
     <select id="queryComboMealIdList" resultType="java.lang.Long">
         select combo_meal_id
         from combo_meal_dish

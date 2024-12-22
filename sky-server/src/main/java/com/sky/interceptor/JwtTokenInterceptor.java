@@ -47,23 +47,34 @@ public class JwtTokenInterceptor implements HandlerInterceptor {
         //2、校验令牌
         try {
             log.info("JWT auth:{}", token);
-            Claims claims = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);
             String requestURI = request.getRequestURI();
 
-            if (!Objects.equals(claims.get(JwtClaimsConstant.EMP_ID).toString(), "empId")
-                    && requestURI.startsWith("/admin")) {
+            if (requestURI.startsWith("/admin")) {
+                Claims claims = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);
                 Long empId = Long.valueOf(claims.get(JwtClaimsConstant.EMP_ID).toString());
-                log.info("Current employee id：{}", empId);
-                BaseContext.setCurrentId(empId);
-                //3、通过，放行
-                return true;
-            } else if (!Objects.equals(claims.get(JwtClaimsConstant.USER_ID).toString(), "userId")
-                    && requestURI.startsWith("/user")) {
+                if (!empId.toString().equals("empId")) {
+                    log.info("Current employee id：{}", empId);
+                    BaseContext.setCurrentId(empId);
+                    //3、通过，放行
+                    return true;
+                } else {
+                    //4、不通过，响应401状态码
+                    response.setStatus(401);
+                    return false;
+                }
+            } else if (requestURI.startsWith("/user")) {
+                Claims claims = JwtUtil.parseJWT(jwtProperties.getUserSecretKey(), token);
                 Long userId = Long.valueOf(claims.get(JwtClaimsConstant.USER_ID).toString());
-                log.info("Current user id：{}", userId);
-                BaseContext.setCurrentId(userId);
-                //3、通过，放行
-                return true;
+                if (!userId.toString().equals("userId")) {
+                    log.info("Current user id：{}", userId);
+                    BaseContext.setCurrentId(userId);
+                    //3、通过，放行
+                    return true;
+                } else {
+                    //4、不通过，响应401状态码
+                    response.setStatus(401);
+                    return false;
+                }
             } else {
                 //4、不通过，响应401状态码
                 response.setStatus(401);

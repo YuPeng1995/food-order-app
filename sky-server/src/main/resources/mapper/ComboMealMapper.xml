@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sky.mapper.ComboMealMapper">
+
+    <insert id="insert" parameterType="ComboMeal" useGeneratedKeys="true" keyProperty="id">
+        insert into combo_meal
+        (category_id, name, price, status, description, image, create_time, update_time, create_user, update_user)
+        values (#{categoryId}, #{name}, #{price}, #{status}, #{description}, #{image}, #{createTime}, #{updateTime},
+                #{createUser}, #{updateUser})
+    </insert>
+
+    <update id="update" parameterType="ComboMeal">
+        update combo_meal
+        <set>
+            <if test="categoryId != null">
+                category_id = #{categoryId},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="description != null">
+                description = #{description},
+            </if>
+            <if test="image != null">
+                image = #{image},
+            </if>
+            update_time = #{updateTime},
+            update_user = #{updateUser}
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="pageQuery" resultType="com.sky.vo.ComboMealVO">
+        select
+        cm.*,c.name categoryName
+        from
+        combo_meal cm
+        left join
+        category c
+        on
+        cm.category_id = c.id
+        <where>
+            <if test="name != null">
+                and cm.name like concat('%',#{name},'%')
+            </if>
+            <if test="status != null">
+                and cm.status = #{status}
+            </if>
+            <if test="categoryId != null">
+                and cm.category_id = #{categoryId}
+            </if>
+        </where>
+        order by cm.create_time desc
+    </select>
+
+    <select id="list" parameterType="ComboMeal" resultType="ComboMeal">
+        select * from combo_meal
+        <where>
+            <if test="name != null">
+                and name like concat('%',#{name},'%')
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+    </select>
+
+</mapper>
