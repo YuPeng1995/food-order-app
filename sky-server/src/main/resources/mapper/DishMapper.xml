@@ -22,6 +22,9 @@
             <if test="price != null">
                 price = #{price},
             </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
             <if test="image != null">
                 image = #{image},
             </if>
