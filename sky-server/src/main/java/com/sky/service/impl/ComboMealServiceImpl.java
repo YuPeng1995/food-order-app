@@ -156,4 +156,11 @@ public class ComboMealServiceImpl implements ComboMealService {
         return comboMealMapper.getDishItemByComboMealId(id);
     }
 
+    @Override
+    public void enableAndDisable(Integer status, Long id) {
+        ComboMeal comboMeal = comboMealMapper.getById(id);
+        comboMeal.setStatus(status);
+        comboMealMapper.update(comboMeal);
+    }
+
 }

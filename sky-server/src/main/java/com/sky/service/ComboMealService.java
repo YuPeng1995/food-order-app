@@ -42,4 +42,6 @@ public interface ComboMealService {
     List<ComboMeal> list(ComboMeal comboMeal);
 
     List<DishItemVO> getDishItemById(Long id);
+
+    void enableAndDisable(Integer status, Long id);
 }

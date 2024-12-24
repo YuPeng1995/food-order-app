@@ -8,6 +8,7 @@ import com.sky.vo.DishItemVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,7 @@ public class ComboMealController {
      * @param categoryId
      * @return
      */
+    @Cacheable(cacheNames = "comboMealCache", key = "#categoryId")
     @GetMapping("/list")
     @ApiOperation("Query Combo Meal by Category ID")
     public Result<List<ComboMeal>> list(Long categoryId) {
