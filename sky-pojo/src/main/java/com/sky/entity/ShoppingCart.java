@@ -38,10 +38,10 @@ public class ShoppingCart implements Serializable {
     private String dishFlavor;
 
     //数量
-    private Integer number;
+    private Integer quantity;
 
     //金额
-    private BigDecimal amount;
+    private BigDecimal price;
 
     //图片
     private String image;

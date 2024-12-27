@@ -9,5 +9,6 @@ public class ShoppingCartDTO implements Serializable {
     private Long dishId;
     private Long comboMealId;
     private String dishFlavor;
+    private Boolean isAdd;
 
 }
