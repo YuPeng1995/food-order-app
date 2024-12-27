@@ -27,9 +27,9 @@ public class AddressBook implements Serializable {
     private String name;
 
     //手机号
-    private String phone;
+    private String phoneNumber;
 
-    private String stateCode;
+    private String cityCode;
 
     private String stateName;
 
