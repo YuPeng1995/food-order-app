@@ -91,4 +91,18 @@ public class OrderServiceImpl implements OrderService {
                 .orderPrices(order.getTotalPrices())
                 .build();
     }
+
+    @Override
+    public Order getById(Long orderId) {
+        return orderMapper.getById(orderId);
+    }
+
+    @Override
+    public void updateOrderStatus(long orderId) {
+        Order order = orderMapper.getById(orderId);
+        order.setPaymentStatus(Order.PAID);
+        order.setCheckoutTime(LocalDateTime.now());
+        order.setStatus(Order.TO_BE_CONFIRMED);
+        orderMapper.update(order);
+    }
 }

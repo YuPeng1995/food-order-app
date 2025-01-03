@@ -14,4 +14,24 @@
                 #{deliveryStatus}, #{deliveryTime}, #{packFees}, #{utensilsNumber}, #{utensilsStatus})
     </insert>
 
+    <update id="update">
+        update `order`
+        <set>
+            <if test="status != null">status = #{status},</if>
+            <if test="checkoutTime != null">checkout_time = #{checkoutTime},</if>
+            <if test="paymentMethod != null">payment_method = #{paymentMethod},</if>
+            <if test="paymentStatus != null">payment_status = #{paymentStatus},</if>
+            <if test="orderNote != null">order_note = #{orderNote},</if>
+            <if test="phoneNumber != null">phone_number = #{phoneNumber},</if>
+            <if test="deliveryAddress != null">delivery_address = #{deliveryAddress},</if>
+            <if test="recipientName != null">recipient_name = #{recipientName},</if>
+            <if test="cancelReason != null">cancel_reason = #{cancelReason},</if>
+            <if test="rejectReason != null">reject_reason = #{rejectReason},</if>
+            <if test="cancelTime != null">cancel_time = #{cancelTime},</if>
+            <if test="estimatedDeliveryTime != null">estimated_delivery_time = #{estimatedDeliveryTime},</if>
+            <if test="deliveryStatus != null">delivery_status = #{deliveryStatus},</if>
+            <if test="deliveryTime != null">delivery_time = #{deliveryTime},</if>
+        </set>
+    </update>
+
 </mapper>

@@ -4,5 +4,5 @@
 *.iml
 *.class
 *Test.java
-EmailConfig.java
+*Config.java
 **/test/
