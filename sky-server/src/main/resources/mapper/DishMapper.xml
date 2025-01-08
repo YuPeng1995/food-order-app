@@ -65,7 +65,6 @@
                 and d.status = #{status}
             </if>
         </where>
-        order by d.create_time desc
     </select>
 
     <select id="list" resultType="Dish" parameterType="Dish">

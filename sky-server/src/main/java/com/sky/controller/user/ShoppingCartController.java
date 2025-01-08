@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user/shoppingCart")
+@RequestMapping("/user/shopping_cart")
 @Api(tags = "User Shopping Cart Apis")
 @Slf4j
 public class ShoppingCartController {

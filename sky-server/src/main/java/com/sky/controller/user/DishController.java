@@ -36,6 +36,7 @@ public class DishController {
     @GetMapping("/list")
     @ApiOperation("Query Dish by Category ID")
     public Result<List<DishVO>> list(Long categoryId) {
+        log.info("Query Dish by Category ID: categoryId={}", categoryId);
         
         // Create a key for Redis
         String key = "dish_" + categoryId;

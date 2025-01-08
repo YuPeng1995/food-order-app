@@ -1,5 +1,6 @@
 package com.sky.service.impl;
 
+import com.paypal.base.rest.JSONFormatter;
 import com.sky.constant.MessageConstant;
 import com.sky.context.BaseContext;
 import com.sky.dto.OrdersSubmitDTO;
@@ -14,6 +15,7 @@ import com.sky.mapper.OrderMapper;
 import com.sky.mapper.ShoppingCartMapper;
 import com.sky.service.OrderService;
 import com.sky.vo.OrderSubmitVO;
+import com.sky.websocket.WebSocketServer;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -37,6 +41,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private AddressBookMapper addressBookMapper;
+
+    @Autowired
+    private WebSocketServer webSocketServer;
 
     @Transactional
     public OrderSubmitVO submitOrder(OrdersSubmitDTO ordersSubmitDTO) {
@@ -82,8 +89,16 @@ public class OrderServiceImpl implements OrderService {
         // Delete the shopping cart
         shoppingCartMapper.delete(userId);
 
-        // Return the order details
+        Map map = new HashMap();
+        map.put("Type", 1);
+        map.put("orderId", order.getId());
+        map.put("content", "Order Number: " + order.getNumber());
+        String json = JSONFormatter.toJSON(map);
+        webSocketServer.sendToAllClient(json);
 
+
+
+        // Return the order details
         return OrderSubmitVO.builder()
                 .id(order.getId())
                 .orderTime(order.getOrderTime())

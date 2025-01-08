@@ -1,6 +1,8 @@
 package com.sky.controller.user;
 
+import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
+import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.CategoryService;
 import io.swagger.annotations.Api;
@@ -35,4 +37,12 @@ public class CategoryController {
         List<Category> list = categoryService.list(type);
         return Result.success(list);
     }
+
+    @GetMapping("/page")
+    @ApiOperation("Query categories by page")
+    public Result<PageResult> queryByPage(CategoryPageQueryDTO categoryPageQueryDTO) {
+        PageResult pageResult = categoryService.queryByPage(categoryPageQueryDTO);
+        return Result.success(pageResult);
+    }
+
 }

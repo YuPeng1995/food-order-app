@@ -94,7 +94,6 @@
                 and type = #{type}
             </if>
         </where>
-        order by sort_order asc, create_time desc
     </select>
 
 
